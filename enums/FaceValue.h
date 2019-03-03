@@ -22,4 +22,11 @@ enum class FaceValue
   King = 10
 };
 
+static const FaceValue AllFaceValues[] = {
+    FaceValue::Ace, FaceValue::Two, FaceValue::Three, FaceValue::Four,
+    FaceValue::Five, FaceValue::Six, FaceValue::Seven, FaceValue::Eight,
+    FaceValue::Nine, FaceValue::Ten, FaceValue::Jack, FaceValue::Queen,
+    FaceValue::King
+};
+
 #endif //BURAKU_FACEVALUE_H

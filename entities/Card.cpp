@@ -4,10 +4,10 @@
 
 #include "Card.h"
 
-FaceValue Card::getValue() const {
+FaceValue Card::GetValue() const {
   return m_value;
 }
 
-Suit Card::getSuit() const {
+Suit Card::GetSuit() const {
   return m_suit;
 }

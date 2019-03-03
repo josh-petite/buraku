@@ -1,9 +1,12 @@
 #include <iostream>
-#include "entities/Card.h"
+#include "entities/Game.h"
 
 int main() {
 
-  Card aceOfSpades(Suit::Spades, FaceValue::Ace);
+  std::shared_ptr<Player> p = std::make_shared<Player>("Josh");
+  Game game(p);
+
+
 
   return 0;
 }
