@@ -1,12 +1,10 @@
 #include <iostream>
-#include "entities/Game.h"
+#include "entities/game.h"
 
 int main() {
 
-  std::shared_ptr<Player> p = std::make_shared<Player>("Josh");
-  Game game(p);
-
-
+  std::shared_ptr<game> g = std::make_shared<game>();
+  g->start();
 
   return 0;
 }

@@ -7,17 +7,19 @@
 
 
 #include <random>
-#include "Card.h"
+#include "card.h"
 
-class Deck {
+class deck {
 public:
-  Deck() : m_cards() { Init(); }
-  Card Draw();
+  deck() : m_cards() { init(); }
+
+  card draw(int index);
+  void shuffle();
 private:
-  void Init();
+  void init();
 
   static const size_t CARD_COUNT = 52;
-  Card m_cards[CARD_COUNT];
+  card m_cards[CARD_COUNT];
 };
 
 

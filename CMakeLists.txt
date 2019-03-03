@@ -3,4 +3,4 @@ project(buraku)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(buraku main.cpp entities/Card.cpp entities/Card.h enums/Suit.h enums/FaceValue.h entities/Deck.cpp entities/Deck.h entities/Game.cpp entities/Game.h entities/Player.cpp entities/Player.h entities/Dealer.cpp entities/Dealer.h entities/Common.h)
+add_executable(buraku main.cpp entities/card.cpp entities/card.h enums/suit.h enums/faceValue.h entities/deck.cpp entities/deck.h entities/game.cpp entities/game.h entities/player.cpp entities/player.h entities/dealer.cpp entities/dealer.h entities/common.h entities/user.cpp entities/user.h)
