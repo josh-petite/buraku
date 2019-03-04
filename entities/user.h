@@ -9,7 +9,10 @@
 #include "player.h"
 
 class user : public player {
-
+public:
+  // referenced via make_shared call in game.cpp
+  user(std::string name, int startingChips) : player(std::move(name), startingChips) {}
+  void reset() override;
 };
 
 

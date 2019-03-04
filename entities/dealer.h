@@ -11,12 +11,17 @@
 
 class dealer : public player {
 public:
-  dealer();
-  void reset();
-  card drawCard();
+  dealer()
+    : player("Dealer", 0), m_deck(std::make_shared<deck>()), m_deckIndex(0) {}
+
+  void dealCardTo(player* p);
+  void reset() override;
+  void takeAction(std::shared_ptr<player> opponent);
 private:
-  int m_deckIndex;
+  card drawCard();
+
   std::shared_ptr<deck> m_deck;
+  int m_deckIndex;
 };
 
 

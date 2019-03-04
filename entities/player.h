@@ -13,19 +13,37 @@
 
 class player {
 public:
-  player() = default;
+  player(std::string name, int chips)
+    : m_chipTotal(chips), m_currentBet(0), m_doublingDown(false), m_standing(false), m_name(std::move(name)) {}
 
-  std::string describeHand() const;
+  virtual void reset() = 0;
+
+  void addToChipTotal(int chips);
+  int calculateScoreWithAces(int score, int numberOfAces) const;
   void discardHand();
-  std::string getName();
+  int getChipTotal() const;
+  int getCurrentBet() const;
+  int getCurrentHandScore() const;
+  std::vector<card> getHand() const;
+  std::string getName() const;
+  bool hasBlackjack() const;
+  bool busted() const;
+  bool isDoublingDown() const;
+  bool standing() const;
   void receiveCard(const card &card);
-  void setName(std::string name);
+  void setCurrentBet(int bet);
+  void setDoublingDown(bool doublingDown);
+  void setStanding(bool standing);
 private:
-  std::string m_name;
+  int m_chipTotal;
+  int m_currentBet;
+  bool m_doublingDown;
   std::vector<card> m_hand;
+  std::string m_name;
+  bool m_standing;
 };
 
-std::ostream& operator<<(std::ostream& stream, const player& player);
+std::ostream& operator<<(std::ostream& stream, const player* p);
 
 
 #endif //BURAKU_PLAYER_H

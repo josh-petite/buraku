@@ -16,12 +16,14 @@ public:
   void start();
 private:
   void askUserForName();
+  void cleanup();
   char collectUserInput();
   void dealCards();
-  void dealCardTo(player& player);
-  void drawGameState() const;
-  void processUserInput(char input);
-  void startRound();
+  void declareWinner();
+  void doubleDown(std::shared_ptr<player> player);
+  void generateGameState(std::ostringstream& os) const;
+  bool playersCanStillDrawCards() const;
+  void processUserInput();
 
   bool m_playing;
   std::shared_ptr<dealer> m_dealer;

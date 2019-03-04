@@ -2,6 +2,7 @@
 // Created by Josh Petite on 2019-03-02.
 //
 
+#include <iomanip>
 #include "card.h"
 
 faceValue card::getValue() const {
@@ -12,7 +13,35 @@ suit card::getSuit() const {
   return m_suit;
 }
 
-std::string deriveValue(const card& card) {
+int card::deriveScoreValue() const {
+  switch(getValue()) {
+    case faceValue::Ace:
+      return 1;
+    case faceValue::Two:
+      return 2;
+    case faceValue::Three:
+      return 3;
+    case faceValue::Four:
+      return 4;
+    case faceValue::Five:
+      return 5;
+    case faceValue::Six:
+      return 6;
+    case faceValue::Seven:
+      return 7;
+    case faceValue::Eight:
+      return 8;
+    case faceValue::Nine:
+      return 9;
+    case faceValue::Ten:
+    case faceValue::Jack:
+    case faceValue::Queen:
+    case faceValue::King:
+      return 10;
+  }
+}
+
+std::string deriveValueForDisplay(const card& card) {
   switch(card.getValue()) {
     case faceValue::Ace:
       return "A";
@@ -43,7 +72,7 @@ std::string deriveValue(const card& card) {
   }
 }
 
-std::string deriveSuit(const card& card) {
+std::string deriveSuitForDisplay(const card& card) {
   switch(card.getSuit()) {
     case suit::clubs:
       return "\xe2\x99\xa7";
@@ -57,6 +86,6 @@ std::string deriveSuit(const card& card) {
 }
 
 std::ostream& operator<<(std::ostream& stream, const card& card) {
-  return stream << deriveValue(card) << deriveSuit(card);
+  return stream << std::setw(2) << deriveValueForDisplay(card) << deriveSuitForDisplay(card);
 }
 

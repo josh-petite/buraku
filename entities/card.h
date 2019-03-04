@@ -17,6 +17,7 @@ public:
   card(const suit suit, const faceValue value)
     : m_suit(suit), m_value(value) {}
 
+  int deriveScoreValue() const;
   faceValue getValue() const;
   suit getSuit() const;
 private:

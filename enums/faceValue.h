@@ -5,6 +5,7 @@
 #ifndef BURAKU_FACEVALUE_H
 #define BURAKU_FACEVALUE_H
 
+
 enum class faceValue
 {
   Ace,
@@ -28,5 +29,6 @@ static const faceValue AllFaceValues[] = {
     faceValue::Nine, faceValue::Ten, faceValue::Jack, faceValue::Queen,
     faceValue::King
 };
+
 
 #endif //BURAKU_FACEVALUE_H

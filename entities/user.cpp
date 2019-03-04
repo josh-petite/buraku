@@ -3,3 +3,9 @@
 //
 
 #include "user.h"
+
+void user::reset() {
+  discardHand();
+  setDoublingDown(false);
+  setStanding(false);
+}
