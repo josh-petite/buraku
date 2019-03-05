@@ -6,7 +6,11 @@
 
 std::string user::getStatus() {
   std::ostringstream stream;
-  stream << getName() << std::endl;
+  std::string winStreak = getWinstreak() > 0
+      ? (" (Win Streak: " + std::to_string(getWinstreak()) + ")")
+      : "";
+
+  stream << getName() << winStreak << std::endl;
   stream << "\tHand: ";
 
   for (auto const& c : m_hand->getHandForDisplay()) {

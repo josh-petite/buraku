@@ -2,7 +2,6 @@
 // Created by Josh Petite on 2019-03-02.
 //
 
-#include <iomanip>
 #include "card.h"
 
 faceValue card::getValue() const {

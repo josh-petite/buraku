@@ -25,10 +25,11 @@ private:
   void doubleDown(std::shared_ptr<player> player);
   bool noOneHasBusted() const;
   bool noOneHasBlackjack() const;
-  void placeBets();
+  int placeBets();
   void printGameState(bool gameOver) const;
+  void printGameSummary(int round) const;
   bool playersCanStillDrawCards() const;
-  void processRound();
+  void processRound(int round);
   void processUserInput();
 
   bool m_playing;

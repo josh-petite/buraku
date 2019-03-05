@@ -20,6 +20,8 @@ void game::askUserForName() {
   std::string name;
   std::cin >> name;
 
+  std::cout << std::endl;
+
   m_user = std::make_shared<user>(name, STARTING_CHIPS);
 }
 
@@ -31,6 +33,7 @@ void game::awaitUserInput() const {
   std::cout << "Press enter key to continue...";
   std::cin.ignore(256,'\n');
   std::cin.get();
+  std::cout << std::endl << std::endl;
 }
 
 void game::cleanup() {
@@ -43,7 +46,7 @@ char game::collectUserInput() {
     return 's';
   }
 
-  std::cout << "[d]ouble-down, [h]it, [s]tay, [q]uit: " << std::endl;
+  std::cout << "[b]et, [d]ouble-down, [h]it, [s]tay, [q]uit: " << std::endl;
 
   char input;
   std::cin >> input;
@@ -68,7 +71,6 @@ void game::declareWinner() const {
 
   std::string hr = "------------------------------------------------";
   std::ostringstream os;
-  os << std::endl << hr;
 
   printGameState(true);
 
@@ -76,21 +78,27 @@ void game::declareWinner() const {
 
   if (m_user->hasBlackjack()) {
     os << "B-L-A-C-K-J-A-C-K!! You won!";
+    m_user->increaseWinstreak();
   }
   else if (m_dealer->hasBlackjack()) {
     os << m_dealer->getName() << " hit a blackjack *sad trombone*";
+    m_user->resetWinstreak();
   }
   else if (m_user->busted()) {
     os << "You busted. Better luck next time!";
+    m_user->resetWinstreak();
   }
   else if (m_dealer->busted()) {
     os << m_dealer->getName() << " busted. You won!";
+    m_user->increaseWinstreak();
   }
   else if (userScore > dealerScore) {
     os << "You won!";
+    m_user->increaseWinstreak();
   }
   else if (userScore < dealerScore) {
     os << m_dealer->getName() << " wins. Better luck next time!";
+    m_user->resetWinstreak();
   }
   else if (userScore == dealerScore) {
     os << "You pushed with the dealer!";
@@ -109,16 +117,6 @@ void game::doubleDown(std::shared_ptr<player> p) {
   p->setStanding(true);
 }
 
-void game::printGameState(bool gameOver) const {
-  std::ostringstream os;
-
-  os << std::endl;
-  os << m_dealer->getStatus(gameOver);
-  os << m_user->getStatus();
-
-  std::cout << os.str();
-}
-
 bool game::playersCanStillDrawCards() const {
   return m_playing
     && noOneHasBusted()
@@ -134,19 +132,43 @@ bool game::noOneHasBlackjack() const {
   return !m_dealer->hasBlackjack() && !m_user->hasBlackjack();
 }
 
-void game::placeBets() {
-  // todo: implement
+int game::placeBets() {
+  return 0;
 }
 
-void game::processRound() {
+void game::printGameState(bool gameOver) const {
+  std::ostringstream os;
+
+  os << std::endl;
+
+  if (gameOver) {
+    os << "------------------ Round Over ------------------" << std::endl;
+  }
+
+  os << m_dealer->getStatus(gameOver);
+  os << m_user->getStatus();
+
+  std::cout << os.str();
+}
+
+void game::printGameSummary(int round) const {
+  std::cout << std::endl << std::endl;
+  std::cout << "Rounds played: " << round << std::endl;
+  std::cout << "Chip total: " << m_user->getChipTotal() << std::endl;
+  std::cout << "------------------------------------------------" << std::endl << std::endl;
+  std::cout << "Thanks for playing!" << std::endl;
+}
+
+void game::processRound(int round) {
   cleanup();
-  placeBets();
+  int chipsInPot = placeBets();
   dealCards();
 
   int pass = 1;
 
   while (playersCanStillDrawCards()) {
-    std::cout << "Pass #" << pass << std::endl;
+    std::cout << "Round #" << round << ", Pass #" << pass << std::endl;
+    std::cout << "Chips in pot: " << chipsInPot << std::endl;
 
     printGameState(false);
     processUserInput();
@@ -186,10 +208,9 @@ void game::start() {
   int round = 1;
 
   while(m_playing) {
-    processRound();
+    processRound(round);
     round++;
   }
 
-  std::cout << "You played " << round << " rounds and finished with ";
-  std::cout << m_user->getChipTotal() << " chips! Thanks for playing!" << std::endl;
+  printGameSummary(round);
 }
