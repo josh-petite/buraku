@@ -12,9 +12,10 @@
 class dealer : public player {
 public:
   dealer()
-    : player("Dealer", 0), m_deck(std::make_shared<deck>()), m_deckIndex(0) {}
+    : player("Dealer"), m_deck(std::make_shared<deck>()), m_deckIndex(0) {}
 
   void dealCardTo(player* p);
+  std::string getStatus(bool gameOver);
   void reset() override;
   void takeAction(std::shared_ptr<player> opponent);
 private:

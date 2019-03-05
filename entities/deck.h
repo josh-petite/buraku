@@ -7,19 +7,17 @@
 
 
 #include <random>
+#include <vector>
 #include "card.h"
 
 class deck {
 public:
-  deck() : m_cards() { init(); }
+  deck();
 
   card draw(int index);
   void shuffle();
 private:
-  void init();
-
-  static const size_t CARD_COUNT = 52;
-  card m_cards[CARD_COUNT];
+  std::vector<card> m_cards;
 };
 
 

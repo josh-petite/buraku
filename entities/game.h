@@ -16,18 +16,26 @@ public:
   void start();
 private:
   void askUserForName();
+  bool atLeastOnePlayerIsNotStanding() const;
+  void awaitUserInput() const;
   void cleanup();
   char collectUserInput();
   void dealCards();
-  void declareWinner();
+  void declareWinner() const;
   void doubleDown(std::shared_ptr<player> player);
-  void generateGameState(std::ostringstream& os) const;
+  bool noOneHasBusted() const;
+  bool noOneHasBlackjack() const;
+  void placeBets();
+  void printGameState(bool gameOver) const;
   bool playersCanStillDrawCards() const;
+  void processRound();
   void processUserInput();
 
   bool m_playing;
   std::shared_ptr<dealer> m_dealer;
   std::shared_ptr<user> m_user;
+
+  const int STARTING_CHIPS = 100;
 };
 
 

@@ -2,33 +2,27 @@
 // Created by Josh Petite on 2019-03-02.
 //
 
+
+#include <algorithm>
+#include <random>
 #include "deck.h"
 
-void deck::init() {
-  int idx = -1;
-
+deck::deck() {
   for (const auto faceValue : AllFaceValues) {
     for (const auto suit : AllSuits) {
-      m_cards[idx++] = card(suit, faceValue);
+      m_cards.emplace_back(card(suit, faceValue));
     }
   }
 }
 
 card deck::draw(int index) {
-  return m_cards[index];
+  auto it = std::next(m_cards.begin(), index);
+  return *it;
 }
 
 void deck::shuffle() {
   std::random_device rd;
-  std::default_random_engine engine{rd()};
-  std::uniform_int_distribution<int> distribution(0, CARD_COUNT - 1);
+  std::mt19937 g(rd());
 
-  auto randomIndex = std::bind(distribution, engine);
-
-  for (int i = 0; i < 1000; i++) {
-    int source = randomIndex();
-    card temp = m_cards[i % CARD_COUNT];
-    m_cards[i % CARD_COUNT] = m_cards[source];
-    m_cards[source] = temp;
-  }
+  std::shuffle(std::begin(m_cards), std::end(m_cards), g);
 }

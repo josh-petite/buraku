@@ -18,6 +18,8 @@ public:
     : m_suit(suit), m_value(value) {}
 
   int deriveScoreValue() const;
+  std::string deriveValueForDisplay() const;
+  std::string deriveSuitForDisplay() const;
   faceValue getValue() const;
   suit getSuit() const;
 private:

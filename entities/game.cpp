@@ -20,7 +20,17 @@ void game::askUserForName() {
   std::string name;
   std::cin >> name;
 
-  m_user = std::make_shared<user>(name, 100);
+  m_user = std::make_shared<user>(name, STARTING_CHIPS);
+}
+
+bool game::atLeastOnePlayerIsNotStanding() const {
+  return !m_dealer->standing() || !m_user->standing();
+}
+
+void game::awaitUserInput() const {
+  std::cout << "Press enter key to continue...";
+  std::cin.ignore(256,'\n');
+  std::cin.get();
 }
 
 void game::cleanup() {
@@ -33,7 +43,7 @@ char game::collectUserInput() {
     return 's';
   }
 
-  std::cout << "[d]ouble down, [h]it, [s]tay, [q]uit: " << std::endl;
+  std::cout << "[d]ouble-down, [h]it, [s]tay, [q]uit: " << std::endl;
 
   char input;
   std::cin >> input;
@@ -48,24 +58,27 @@ void game::dealCards() {
   m_dealer->dealCardTo(m_dealer.get());
 }
 
-void game::declareWinner() {
+void game::declareWinner() const {
   if (!m_playing) {
     return;
   }
 
-  int userScore = m_user->getCurrentHandScore();
-  int dealerScore = m_dealer->getCurrentHandScore();
-  std::ostringstream os;
+  int userScore = m_user->getScore();
+  int dealerScore = m_dealer->getScore();
 
-  os << std::endl << "------------------------------------------------";
-  generateGameState(os);
+  std::string hr = "------------------------------------------------";
+  std::ostringstream os;
+  os << std::endl << hr;
+
+  printGameState(true);
+
   os << std::endl << "*** ";
 
   if (m_user->hasBlackjack()) {
     os << "B-L-A-C-K-J-A-C-K!! You won!";
   }
   else if (m_dealer->hasBlackjack()) {
-    os << m_dealer->getName() << " wins. Better luck next time!";
+    os << m_dealer->getName() << " hit a blackjack *sad trombone*";
   }
   else if (m_user->busted()) {
     os << "You busted. Better luck next time!";
@@ -83,8 +96,11 @@ void game::declareWinner() {
     os << "You pushed with the dealer!";
   }
 
-  os << " ***" << std::endl << "------------------------------------------------" << std::endl << std::endl;
+  os << " ***" << std::endl << hr << std::endl << std::endl;
+
   std::cout << os.str();
+
+  awaitUserInput();
 }
 
 void game::doubleDown(std::shared_ptr<player> p) {
@@ -93,25 +109,61 @@ void game::doubleDown(std::shared_ptr<player> p) {
   p->setStanding(true);
 }
 
-void game::generateGameState(std::ostringstream& os) const {
-  int longestNameLength = (int)std::max(m_dealer->getName().length(), m_user->getName().length());
+void game::printGameState(bool gameOver) const {
+  std::ostringstream os;
 
   os << std::endl;
-  os << std::setw(longestNameLength) << m_dealer->getName() << ": " << m_dealer;
-  os << std::setw(longestNameLength) << m_user->getName() << ": " << m_user;
+  os << m_dealer->getStatus(gameOver);
+  os << m_user->getStatus();
+
+  std::cout << os.str();
 }
 
 bool game::playersCanStillDrawCards() const {
   return m_playing
-    && (!m_dealer->busted()     && !m_user->busted())
-    && (!m_dealer->standing()   || !m_user->standing())
-    && (!m_dealer->hasBlackjack() && !m_user->hasBlackjack());
+    && noOneHasBusted()
+    && atLeastOnePlayerIsNotStanding()
+    && noOneHasBlackjack();
+}
+
+bool game::noOneHasBusted() const {
+  return !m_dealer->busted() && !m_user->busted();
+}
+
+bool game::noOneHasBlackjack() const {
+  return !m_dealer->hasBlackjack() && !m_user->hasBlackjack();
+}
+
+void game::placeBets() {
+  // todo: implement
+}
+
+void game::processRound() {
+  cleanup();
+  placeBets();
+  dealCards();
+
+  int pass = 1;
+
+  while (playersCanStillDrawCards()) {
+    std::cout << "Pass #" << pass << std::endl;
+
+    printGameState(false);
+    processUserInput();
+    m_dealer->takeAction(m_user);
+    pass++;
+  }
+
+  declareWinner();
 }
 
 void game::processUserInput() {
   char input = collectUserInput();
 
   switch(input) {
+    case 'b':
+      //placeBet(m_user);
+      break;
     case 'd':
       doubleDown(m_user);
       break;
@@ -131,22 +183,13 @@ void game::processUserInput() {
 
 void game::start() {
   m_playing = true;
+  int round = 1;
 
   while(m_playing) {
-    cleanup();
-    dealCards();
-
-    while (playersCanStillDrawCards()) {
-      std::ostringstream os;
-      generateGameState(os);
-      std::cout << os.str();
-      processUserInput();
-      m_dealer->takeAction(m_user);
-      std::cout << std::endl;
-    }
-
-    declareWinner();
+    processRound();
+    round++;
   }
 
-  std::cout << "Thanks for playing!" << std::endl;
+  std::cout << "You played " << round << " rounds and finished with ";
+  std::cout << m_user->getChipTotal() << " chips! Thanks for playing!" << std::endl;
 }

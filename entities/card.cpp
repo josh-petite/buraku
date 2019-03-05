@@ -41,8 +41,8 @@ int card::deriveScoreValue() const {
   }
 }
 
-std::string deriveValueForDisplay(const card& card) {
-  switch(card.getValue()) {
+std::string card::deriveValueForDisplay() const {
+  switch(getValue()) {
     case faceValue::Ace:
       return "A";
     case faceValue::Two:
@@ -72,8 +72,8 @@ std::string deriveValueForDisplay(const card& card) {
   }
 }
 
-std::string deriveSuitForDisplay(const card& card) {
-  switch(card.getSuit()) {
+std::string card::deriveSuitForDisplay() const {
+  switch(getSuit()) {
     case suit::clubs:
       return "\xe2\x99\xa7";
     case suit::diamonds:
@@ -83,9 +83,5 @@ std::string deriveSuitForDisplay(const card& card) {
     case suit::spades:
       return "\xe2\x99\xa4";
   }
-}
-
-std::ostream& operator<<(std::ostream& stream, const card& card) {
-  return stream << std::setw(2) << deriveValueForDisplay(card) << deriveSuitForDisplay(card);
 }
 

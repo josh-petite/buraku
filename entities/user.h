@@ -12,6 +12,8 @@ class user : public player {
 public:
   // referenced via make_shared call in game.cpp
   user(std::string name, int startingChips) : player(std::move(name), startingChips) {}
+
+  std::string getStatus() override;
   void reset() override;
 };
 
