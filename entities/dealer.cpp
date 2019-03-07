@@ -39,7 +39,7 @@ std::string dealer::getStatus(bool gameOver) {
 }
 
 void dealer::reset() {
-  discardHand();
+  resetRound();
   setStanding(false);
 
   m_deck->shuffle();

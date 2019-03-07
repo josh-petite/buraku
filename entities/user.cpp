@@ -6,8 +6,8 @@
 
 std::string user::getStatus() {
   std::ostringstream stream;
-  std::string winStreak = getWinstreak() > 0
-      ? (" (Win Streak: " + std::to_string(getWinstreak()) + ")")
+  std::string winStreak = getWinStreak() > 0
+      ? (" (Win Streak: " + std::to_string(getWinStreak()) + ")")
       : "";
 
   stream << getName() << winStreak << std::endl;
@@ -24,8 +24,18 @@ std::string user::getStatus() {
   return stream.str();
 }
 
+void user::processLoss() {
+  resetWinStreak();
+}
+
+void user::processWin(int pot, bool wasBlackjack = false) {
+  int reward = pot * (wasBlackjack ? 3 : 2);
+  addToChipTotal(reward);
+  increaseWinStreak();
+}
+
 void user::reset() {
-  discardHand();
+  resetRound();
   setDoublingDown(false);
   setStanding(false);
 }

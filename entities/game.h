@@ -18,21 +18,25 @@ private:
   void askUserForName();
   bool atLeastOnePlayerIsNotStanding() const;
   void awaitUserInput() const;
-  void cleanup();
-  char collectUserInput();
-  void dealCards();
-  void declareWinner() const;
-  void doubleDown(std::shared_ptr<player> player);
+  void cleanup() const;
+  void dealCards() const;
+  void displayRoundHeaderMessage(int round, int pass) const;
+  void displayWelcomeMessage() const;
+  void doubleDown();
+  std::string generateCenteredMessage(std::string message = "", char decorator = '-') const;
   bool noOneHasBusted() const;
   bool noOneHasBlackjack() const;
-  int placeBets();
-  void printGameState(bool gameOver) const;
+  void placeBets();
+  void printPassState() const;
+  void printRoundSummary() const;
   void printGameSummary(int round) const;
   bool playersCanStillDrawCards() const;
+  void processOutcome(int chipsInPot) const;
   void processRound(int round);
   void processUserInput();
 
   bool m_playing;
+  int m_currentPot;
   std::shared_ptr<dealer> m_dealer;
   std::shared_ptr<user> m_user;
 

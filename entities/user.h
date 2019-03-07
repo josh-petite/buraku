@@ -14,11 +14,15 @@ public:
   user(std::string name, int startingChips) : player(std::move(name), startingChips), m_winStreak(0) {}
 
   std::string getStatus() override;
-  inline int getWinstreak() const { return m_winStreak; }
-  inline void increaseWinstreak() { m_winStreak++; }
-  inline void resetWinstreak() { m_winStreak = 0; }
+  inline int getWinStreak() const { return m_winStreak; }
+  void processLoss();
+  void processWin(int pot, bool wasBlackjack);
+
   void reset() override;
 private:
+  inline void increaseWinStreak() { m_winStreak++; }
+  inline void resetWinStreak() { m_winStreak = 0; }
+
   int m_winStreak;
 };
 

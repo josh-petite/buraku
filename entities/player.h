@@ -20,7 +20,6 @@ public:
 
   player(std::string name, int chips)
     : m_chipTotal(chips),
-      m_currentBet(0),
       m_doublingDown(false),
       m_hand(std::make_shared<hand>()),
       m_name(std::move(name)),
@@ -29,18 +28,17 @@ public:
   virtual void reset() = 0;
   virtual std::string getStatus();
 
-  void addToChipTotal(int chips);
+  inline void addToChipTotal(const int chips) { m_chipTotal += chips; };
   inline bool busted() const { return m_hand->busted(); }
-  void discardHand();
+  inline void decreaseChipTotal(int amount) { m_chipTotal -= amount; }
+  void resetRound();
   int getChipTotal() const;
   inline int getScore() const { return m_hand->getScore(); }
-  int getCurrentBet() const;
   std::string getName() const;
   inline bool hasBlackjack() const { return m_hand->hasBlackjack(); }
   bool isDoublingDown() const;
   bool standing() const;
   void receiveCard(const card &card);
-  void setCurrentBet(int bet);
   void setDoublingDown(bool doublingDown);
   void setStanding(bool standing);
 protected:
@@ -49,7 +47,6 @@ protected:
   std::shared_ptr<hand> m_hand;
 private:
   int m_chipTotal;
-  int m_currentBet;
   bool m_doublingDown;
   std::string m_name;
   bool m_standing;

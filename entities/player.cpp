@@ -4,11 +4,7 @@
 
 #include "player.h"
 
-void player::addToChipTotal(int chips) {
-  m_chipTotal += chips;
-}
-
-void player::discardHand() {
+void player::resetRound() {
   m_hand->discard();
   m_standing = false;
   m_doublingDown = false;
@@ -16,10 +12,6 @@ void player::discardHand() {
 
 int player::getChipTotal() const {
   return m_chipTotal;
-}
-
-int player::getCurrentBet() const {
-  return m_currentBet;
 }
 
 std::string player::getCurrentState() const {
@@ -71,10 +63,6 @@ bool player::standing() const {
 
 void player::receiveCard(const card &card) {
   m_hand->addCard(card);
-}
-
-void player::setCurrentBet(int bet) {
-  m_currentBet = bet;
 }
 
 void player::setDoublingDown(bool doublingDown) {
