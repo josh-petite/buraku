@@ -36,6 +36,18 @@ void hand::discard() {
   m_hand.clear();
 }
 
+std::string hand::getCurrentState() const {
+  std::ostringstream stream;
+
+  if (busted()) {
+    stream << "(busted)";
+  } else if (hasBlackjack()) {
+    stream << "(BLACKJACK)";
+  }
+
+  return stream.str();
+}
+
 std::vector<std::string> hand::getHandForDisplay() const {
   std::vector<std::string> result;
 

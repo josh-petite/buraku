@@ -19,7 +19,7 @@ std::string user::getStatus() {
 
   stream << std::endl;
   stream << "\tChips: " << getChipTotal() << std::endl;
-  stream << "\t" << getCurrentState() << std::endl;
+  stream << "\t" << m_hand->getCurrentState() << std::endl;
 
   return stream.str();
 }

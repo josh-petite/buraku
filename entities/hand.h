@@ -16,6 +16,7 @@ public:
   void addCard(const card& card);
   bool busted() const;
   void discard();
+  std::string getCurrentState() const;
   std::vector<std::string> getHandForDisplay() const;
   int getScore() const;
   bool hasBlackjack() const;

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <stdio.h>
 #include "game.h"
 
 game::game() {
@@ -68,13 +69,13 @@ std::string game::generateCenteredMessage(std::string message, char decorator) c
     return os.str();
   }
 
-  long padding = (80 - message.length()) / 2;
+  long padding = (79 - message.length()) / 2;
 
   for (int i = 0; i < padding - 1; i++) { os << decorator; }
 
   os << " " << message << " ";
 
-  for (int i = 0; i < padding - 1; i++) { os << decorator; }
+  for (int i = 0; i < padding - (padding % 2 == 0 ? 0 : 1); i++) { os << decorator; }
 
   return os.str();
 }
@@ -91,14 +92,14 @@ void game::placeBets() {
   int currentChips = m_user->getChipTotal();
 
   std::ostringstream os;
-  os << std::endl << "Chips: " << currentChips << std::endl << std::endl;
-  os << "How much will you add to the pot?" << std::endl << std::endl;
+  os << "Chips: " << currentChips;
+  os << " -- Wager?" << std::endl << std::endl;
   os << "1. 5 chips" << std::endl;
   os << "2. 10 chips" << std::endl;
   os << "3. ALL IN!" << std::endl;
   os << "(1) ";
 
-  char response = promptUser(os, { '1', '2', '3', '\n', '\r'});
+  char response = promptUser(os, { '1', '2', '3', '\n'});
 
   if (response == '2') {
     m_user->decreaseChipTotal(10);
@@ -217,6 +218,8 @@ void game::processRound(int round) {
   }
 
   processOutcome(m_currentPot);
+  std::cout << "Press enter to continue..." << std::endl;
+  std::cin.ignore();
 }
 
 void game::processUserInput() {
@@ -225,9 +228,9 @@ void game::processUserInput() {
   }
 
   std::ostringstream os;
-  os << "[b]et, [d]ouble-down, [h]it, [s]tay, [q]uit" << std::endl << "(s) ";
+  os << "[b]et, [d]ouble-down, [h]it, [s]tay, [q]uit (s) ";
 
-  char response = promptUser(os, { 'b', 'd', 'h', 'q', 's' });
+  char response = promptUser(os, { 'b', 'd', 'h', 'q', 's', '\n' });
 
   if (response == 'b') {
     placeBets();
@@ -235,19 +238,20 @@ void game::processUserInput() {
     doubleDown();
   } else if (response == 'h') {
     m_dealer->dealCardTo(m_user.get());
-  } else if (response == 's') {
-    m_user->setStanding(true);
   } else if (response == 'q'){
     m_playing = false;
+  } else if (response == 's' || response == '\n'){
+    m_user->setStanding(true);
   }
 }
 
 char game::promptUser(std::ostringstream& prompt, std::set<int> answers) const {
   std::cout << prompt.str();
-  char response;
+  int response;
 
   do {
-    std::cin >> std::setw(1) >> response;
+//    response = getchar();
+    std::cin >> std::noskipws >> std::setw(1) >> response;
   } while (answers.find(response) == answers.end());
 
   return response;

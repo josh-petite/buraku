@@ -4,6 +4,11 @@
 
 #include "player.h"
 
+void player::addToChipTotal(int chips) {
+  m_chipTotal += chips;
+  m_maxChipTotal = std::max(m_maxChipTotal, m_chipTotal);
+}
+
 void player::resetRound() {
   m_hand->discard();
   m_standing = false;
@@ -12,18 +17,6 @@ void player::resetRound() {
 
 int player::getChipTotal() const {
   return m_chipTotal;
-}
-
-std::string player::getCurrentState() const {
-  std::ostringstream stream;
-
-  if (busted()) {
-    stream << "(busted)";
-  } else if (standing()) {
-    stream << "(standing)";
-  }
-
-  return stream.str();
 }
 
 std::string player::getName() const {
@@ -48,7 +41,7 @@ std::string player::getStatus() {
 
   stream << std::endl;
   stream << "\tChips: " << getChipTotal() << std::endl;
-  stream << "\t" << getCurrentState() << std::endl;
+  stream << "\t" << m_hand->getCurrentState() << std::endl;
 
   return stream.str();
 }
