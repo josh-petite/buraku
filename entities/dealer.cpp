@@ -24,7 +24,7 @@ std::string dealer::getStatus(bool gameOver) {
   bool firstCardSkipped = gameOver;
   for (auto const& c : m_hand->getHandForDisplay()) {
     if (!firstCardSkipped) {
-      stream << "H  ";
+      stream << "??";
       firstCardSkipped = true;
       continue;
     }

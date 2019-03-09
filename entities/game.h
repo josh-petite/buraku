@@ -5,7 +5,7 @@
 #ifndef BURAKU_GAME_H
 #define BURAKU_GAME_H
 
-
+#include <set>
 #include "dealer.h"
 #include "user.h"
 
@@ -17,8 +17,7 @@ public:
 private:
   void askUserForName();
   bool atLeastOnePlayerIsNotStanding() const;
-  void awaitUserInput() const;
-  void cleanup() const;
+  void cleanup();
   void dealCards() const;
   void displayRoundHeaderMessage(int round, int pass) const;
   void displayWelcomeMessage() const;
@@ -30,8 +29,9 @@ private:
   void printPassState() const;
   void printRoundSummary() const;
   void printGameSummary(int round) const;
+  char promptUser(std::ostringstream& stream, std::set<int>) const;
   bool playersCanStillDrawCards() const;
-  void processOutcome(int chipsInPot) const;
+  void processOutcome(int chipsInPot);
   void processRound(int round);
   void processUserInput();
 
