@@ -16,7 +16,7 @@ public:
 
   void dealCardTo(player* p);
   std::string getStatus(bool gameOver);
-  void reset() override;
+  void reset();
   void takeAction(std::shared_ptr<player> opponent);
 private:
   card drawCard();

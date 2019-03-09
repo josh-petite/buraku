@@ -18,7 +18,7 @@ public:
   void processLoss();
   void processWin(int pot, bool wasBlackjack);
 
-  void reset() override;
+  void reset();
 private:
   inline void increaseWinStreak() { m_winStreak++; }
   inline void resetWinStreak() { m_winStreak = 0; }

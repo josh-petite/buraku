@@ -74,13 +74,13 @@ std::string card::deriveValueForDisplay() const {
 std::string card::deriveSuitForDisplay() const {
   switch(getSuit()) {
     case suit::clubs:
-      return "\xe2\x99\xa7";
+      return R"(♧)";
     case suit::diamonds:
-      return "\xe2\x99\xa2";
+      return R"(♢)";
     case suit::hearts:
-      return "\xe2\x99\xa1";
+      return R"(♡)";
     case suit::spades:
-      return "\xe2\x99\xa4";
+      return R"(♤)";
   }
 }
 

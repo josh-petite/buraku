@@ -25,7 +25,6 @@ public:
       m_name(std::move(name)),
       m_standing(false) {}
 
-  virtual void reset() = 0;
   virtual std::string getStatus();
 
   inline void addToChipTotal(const int chips) { m_chipTotal += chips; };

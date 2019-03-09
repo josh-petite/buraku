@@ -29,7 +29,7 @@ void user::processLoss() {
 }
 
 void user::processWin(int pot, bool wasBlackjack = false) {
-  int reward = static_cast<int>(pot * (wasBlackjack ? 2.5 : 2));
+  auto reward = static_cast<int>(pot * (wasBlackjack ? 2.5 : 2));
   addToChipTotal(reward);
   increaseWinStreak();
 }
