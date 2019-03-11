@@ -97,9 +97,9 @@ void game::placeBets() {
   os << "1. 5 chips" << std::endl;
   os << "2. 10 chips" << std::endl;
   os << "3. ALL IN!" << std::endl;
-  os << "(1) ";
+  os << "> ";
 
-  char response = promptUser(os, { '1', '2', '3', '\n'});
+  char response = promptUser(os, { '1', '2', '3'});
 
   if (response == '2') {
     m_user->decreaseChipTotal(10);
@@ -218,8 +218,6 @@ void game::processRound(int round) {
   }
 
   processOutcome(m_currentPot);
-  std::cout << "Press enter to continue..." << std::endl;
-  std::cin.ignore();
 }
 
 void game::processUserInput() {
@@ -228,9 +226,10 @@ void game::processUserInput() {
   }
 
   std::ostringstream os;
-  os << "[b]et, [d]ouble-down, [h]it, [s]tay, [q]uit (s) ";
+  os << "[b]et, [d]ouble-down, [h]it, [s]tay, [q]uit" << std::endl;
+  os << "> ";
 
-  char response = promptUser(os, { 'b', 'd', 'h', 'q', 's', '\n' });
+  char response = promptUser(os, { 'b', 'd', 'h', 'q', 's' });
 
   if (response == 'b') {
     placeBets();
@@ -240,18 +239,17 @@ void game::processUserInput() {
     m_dealer->dealCardTo(m_user.get());
   } else if (response == 'q'){
     m_playing = false;
-  } else if (response == 's' || response == '\n'){
+  } else if (response == 's'){
     m_user->setStanding(true);
   }
 }
 
 char game::promptUser(std::ostringstream& prompt, std::set<int> answers) const {
   std::cout << prompt.str();
-  int response;
+  char response;
 
   do {
-//    response = getchar();
-    std::cin >> std::noskipws >> std::setw(1) >> response;
+    std::cin >> std::setw(1) >> response;
   } while (answers.find(response) == answers.end());
 
   return response;
